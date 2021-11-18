@@ -53,6 +53,44 @@ Chromosome.prototype.mate = function (chromosome) {
 }
 
 
+/**
+ * Mutation 
+ * @param {*} chance 
+ * @returns 
+ */
+Chromosome.prototype.mutate = function (chance) {
+    if (Math.random() > chance) return;
+    var index = Math.floor(Math.random() * this.code.length);
+    var upOrDown = Math.random() <= 0.5 ? -1 : 1;
+    var newChar = String.fromCharCode(this.code.charCodeAt(index) + upOrDown);
+    var newString = '';
+    for (i = 0; i < this.code.length; i++) {
+      if (i == index) newString += newChar;
+      else newString += this.code[i];
+    }
+  
+    this.code = newString;
+}
+
+/**
+ * Population constructor function
+ * @param {*} goal 
+ * @param {*} size 
+ */
+var Population = function (goal, size) {
+    this.members = [];
+    this.goal = goal;
+    this.generationNumber = 0;
+    scope = this;
+    while (size--) {
+  
+      var chromo = new Chromosome(this.goal.length);
+      //chromo.random(this.goal.length);
+      this.members.push(chromo);
+    }
+}
+  
+
 let chr = new Chromosome(5);
 console.log(chr.value);
 
