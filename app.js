@@ -26,6 +26,20 @@ var Chromosome = function(length, code) {
     }
 }
 
+/**
+ * 
+ * @param {*} compareTo
+ * Fitness function - measure the quality of each solution
+ */
+Chromosome.prototype.calcCost = function (compareTo) {
+    let total = 0;
+    for (let i = 0; i < this.code.length; i++) {
+        total += Math.pow(this.code.charCodeAt(i) - compareTo.charCodeAt(i), 2);
+      }
+    this.cost = total;
+}
+
+
 let chr = new Chromosome(5);
 console.log(chr.value);
 
