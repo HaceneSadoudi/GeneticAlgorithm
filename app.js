@@ -89,6 +89,18 @@ var Population = function (goal, size) {
       this.members.push(chromo);
     }
 }
+
+/**
+ * This function sort the chromosomes by cost (fitness)
+ * The first chromo will have the highest fitness
+ */
+Population.prototype.sort = function () {
+    this.members.sort(function (a, b) {
+      return a.cost - b.cost;
+    })
+}
+ 
+
   
 
 let chr = new Chromosome(5);
