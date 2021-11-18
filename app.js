@@ -141,7 +141,24 @@ Population.prototype.sort = function () {
   
 }
 
-
+/**
+ * This method used for displaying all chromosomes of
+ * each generation 
+ */
+ Population.prototype.display = function () {
+    document.body.innerHTML = '';
+    document.body.innerHTML += ("<h2>Generation: " + this.generationNumber + "</h2>");
+    document.body.innerHTML += ("<ul>");
+    for (var i = 0; i < this.members.length; i++) {
+      
+      if(this.members[i].cost == 0 && i == 0) {
+        document.body.innerHTML += ("<li class='colored'>" + this.members[i].code + " (" + this.members[i].cost + ")");
+      }else {
+        document.body.innerHTML += ("<li class=''>" + this.members[i].code + " (" + this.members[i].cost + ")");
+      }
+    }
+    document.body.innerHTML += ("</ul>");
+};
 
   
 
