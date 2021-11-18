@@ -100,6 +100,48 @@ Population.prototype.sort = function () {
     })
 }
  
+/**
+ * This function is the main GA, it uses the methods 
+ * that we declared above to get the best solution
+ * @returns 
+ */
+ Population.prototype.generation = function () {
+    for (let i = 0; i < this.members.length; i++) {
+      this.members[i].calcCost(this.goal);
+    }
+    this.sort();
+
+    let j = 0; 
+    var childrens = this.members[0].mate(this.members
+    [1]);
+
+    for (let i = 0; i < 2; i++) {
+        childrens[i].calcCost(this.goal);
+        this.members[this.members.length - 1 - i] = childrens[i];
+    }
+
+    for (let i = 0; i < this.members.length; i++) {
+        this.members[i].mutate(0.5);
+        this.members[i].calcCost(this.goal);
+        if (this.goal == this.members[i].code) {
+            this.sort();
+            this.display();
+            clearTimeout(timeoutID);
+            return true;
+        }
+    }
+
+    this.sort();
+    this.generationNumber++;
+    this.display();
+    var scope = this;
+    var timeoutID = setTimeout(function () {
+        scope.generation();
+    }, 5);
+  
+}
+
+
 
   
 
