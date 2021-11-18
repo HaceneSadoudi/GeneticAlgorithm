@@ -3,7 +3,7 @@
  */
 
 var Gene = function() {
-
+    
 }
 
 Gene.prototype.random = function() {
@@ -16,12 +16,7 @@ Gene.prototype.random = function() {
  */
 
 var Chromosome = function(length) {
-    this.value = '';
-    this.cost = 99999;
-    for(let i=0;i<length;i++) {
-        let gene = new Gene();
-        this.value += gene.random();
-    }
+    
 }
 
 let chr = new Chromosome(5);
