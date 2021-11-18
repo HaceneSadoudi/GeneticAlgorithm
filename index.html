@@ -10,7 +10,23 @@
 <body>
     
     
-    
+    <button id="start" onclick="start()">Start</button>
+    <button id="stop" onclick="stop()">Pause</button>
+
+    <p>
+        Goal : <b><span id="goal"> </span></b></br>
+        Best : <b><span id="best"></span></b>
+
+        <ul>
+            <li>Population size : <span id="popSize"></span></li>
+            <li>Chromosome length : <span id="chromoLength"></span></li>
+            <li>Mutation rate : <span id="mutRate"></span></li>
+            <li>Generation : <b><span id="generationNbr"></span></b></li>
+        </ul>
+
+    </p>
+
+    <div id="generatedSolutions"></div>
     <script src="app.js"></script>
 </body>
 </html>

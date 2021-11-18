@@ -1,3 +1,11 @@
+
+
+var timeoutID;
+var startBtn = document.getElementById('start');
+var stopBtn = document.getElementById('stop');
+stopBtn.disabled = true;
+
+
 /**
  * Gene Constructor function
  */
@@ -14,6 +22,7 @@ Gene.prototype.random = function() {
  */
 
 var Chromosome = function(length, code) {
+    this.length = length;
     if(code) {
         this.code = code;
         this.cost = 99999;
@@ -77,15 +86,15 @@ Chromosome.prototype.mutate = function (chance) {
  * @param {*} goal 
  * @param {*} size 
  */
-var Population = function (goal, size) {
+var Population = function (goal, size, mutrate) {
     this.members = [];
     this.goal = goal;
+    this.mutRate = mutrate;
     this.generationNumber = 0;
     scope = this;
     while (size--) {
   
       var chromo = new Chromosome(this.goal.length);
-      //chromo.random(this.goal.length);
       this.members.push(chromo);
     }
 }
@@ -99,6 +108,7 @@ Population.prototype.sort = function () {
       return a.cost - b.cost;
     })
 }
+
  
 /**
  * This function is the main GA, it uses the methods 
@@ -121,21 +131,24 @@ Population.prototype.sort = function () {
     }
 
     for (let i = 0; i < this.members.length; i++) {
-        this.members[i].mutate(0.5);
+        this.members[i].mutate(this.mutRate);
         this.members[i].calcCost(this.goal);
         if (this.goal == this.members[i].code) {
+            this.best = this.members[i].code;
             this.sort();
             this.display();
-            clearTimeout(timeoutID);
+            stop();
+            pop = new Population('Generate Me!', 150, 0.1);
             return true;
         }
     }
 
     this.sort();
     this.generationNumber++;
+    this.best = this.members[0].code;
     this.display();
     var scope = this;
-    var timeoutID = setTimeout(function () {
+    timeoutID = setTimeout(function () {
         scope.generation();
     }, 5);
   
@@ -146,22 +159,41 @@ Population.prototype.sort = function () {
  * each generation 
  */
  Population.prototype.display = function () {
-    document.body.innerHTML = '';
-    document.body.innerHTML += ("<h2>Generation: " + this.generationNumber + "</h2>");
-    document.body.innerHTML += ("<ul>");
+    
+    document.getElementById('best').innerHTML = this.best;
+    document.getElementById('generationNbr').innerHTML = this.generationNumber;
+
+    var li = "";
     for (var i = 0; i < this.members.length; i++) {
-      
-      if(this.members[i].cost == 0 && i == 0) {
-        document.body.innerHTML += ("<li class='colored'>" + this.members[i].code + " (" + this.members[i].cost + ")");
-      }else {
-        document.body.innerHTML += ("<li class=''>" + this.members[i].code + " (" + this.members[i].cost + ")");
-      }
+      li += "<li>" + this.members[i].code + "</li>" ;
     }
-    document.body.innerHTML += ("</ul>");
+    document.getElementById('generatedSolutions').innerHTML = "<ul style='columns : 6'>" + li + "</ul>";
 };
 
-  
+let pop = new Population('Generate Me!', 150, 0.1);
 
-let chr = new Chromosome(5);
-console.log(chr.value);
+function init() {
+  document.getElementById('goal').innerHTML = pop.goal;
+  document.getElementById('popSize').innerHTML = pop.members.length;
+  document.getElementById('chromoLength').innerHTML = pop.members[0].length;
+  document.getElementById('mutRate').innerHTML = pop.mutRate;
+  document.getElementById('generationNbr').innerHTML = pop.generationNumber;
+}
+
+function start() {
+  startBtn.disabled = true;
+  stopBtn.disabled = false;
+  pop.generation();
+}  
+
+function stop() {
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+  clearTimeout(timeoutID);
+}
+
+
+init();
+
+
 
